@@ -128,7 +128,7 @@ You can remove the cut lines and safety margins by commenting out or deleting th
 > ```
 > 
 > * Supported input formats: PNG, JPG, and PDF.
-> * The script automatically checks for the required ICC profile in the `./lib/` directory. If it is missing, the script will download it from the ECI website.
+> * The script automatically checks for the required ICC profile in the `./lib/` directory. If it is missing, the script will download it from the x-disc website.
 > * The converted file will be saved in the same directory as the input, with `.cmyk` appended to the filename (e.g., `image.cmyk.jpg` or `document.cmyk.pdf`). **Note that the png format does not work with the CMYK profile, the output will be a jpg file**
 >
 > You can check if your `cover.pdf` or `disc.pdf` has the correct color profil using this command :
