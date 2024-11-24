@@ -119,7 +119,7 @@ You can remove the cut lines and safety margins by commenting out or deleting th
 >
 > #### COLOR PROFILE
 >
-> Every image embedded in the PDF must use the CMYK color profile. You can use the provided script tools/rgb2cmyk to convert images or PDFs to the **ISOcoated_v2_300_FOGRA_39L** CMYK profile, which is optimized for professional printing and recommended by x-disc.pl.
+> Every image embedded in the PDF must use the CMYK color profile. You can use the provided script `tools/rgb2cmyk` to convert images or PDFs to the **ISOcoated_v2_300_FOGRA_39L** CMYK profile, which is optimized for professional printing and recommended by x-disc.pl.
 > 
 > To perform the conversion, run :
 > 
