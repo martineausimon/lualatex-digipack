@@ -16,6 +16,14 @@ This repository provides a modular template for creating a **Digipack album cove
   - [Convert Fonts into Lines](#convert-fonts-into-lines)
 - [Contributing](#contributing)
 
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/d9648eb6-d4e9-4321-a45c-4d8faf782708">
+</p>
+
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/d4f3c7c4-c65b-40e7-b14b-5e7b5273be39">
+</p>
+
 ## REQUIREMENTS
 
 To use this template, ensure you have the following installed on your system :
