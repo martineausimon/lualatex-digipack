@@ -1,0 +1,48 @@
+#!/usr/bin/env lua
+
+package.path = table.concat({
+  package.path,
+  "./lua/?.lua",
+}, ";")
+
+local tools = require('utils.tools')
+local messages = require('utils.messages')
+local sh = require('utils.sh')
+
+if arg[1] == "--help" or arg[1] == "-h" or #arg ~= 1 then
+  messages.send([[
+Usage: ./tools/fonts2lines [input.pdf]
+
+Description:
+This script processes a PDF file and converts all embedded fonts into vector outlines. 
+The resulting PDF file will have the same name as the input file, but with a ".lines.pdf" extension.
+
+Requirements:
+- The input file must be a valid PDF.
+- The 'gs' (Ghostscript) command-line tool must be installed on your system.
+
+Example:
+    ./lua/fonts2lines.lua document.pdf
+
+This will generate a file named 'document.lines.pdf' in the same directory.
+]])
+  return
+end
+
+local input = arg[1]
+
+sh.check_filetype(input, ".pdf")
+
+if not sh.file_exists(input) then
+  messages.error("Can't find file " .. input)
+  os.exit(1)
+end
+
+sh.check_dependencies("gs")
+
+local basename = tools.remove_ext(input)
+local output = basename .. ".lines.pdf"
+
+sh.cmd(string.format("gs -o %q  -dNoOutputFonts -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress %q", output, input))
+
+messages.check(output)

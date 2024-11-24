@@ -1,0 +1,93 @@
+\documentclass{article}
+\input{./lib/cover.tex}
+
+\begin{document}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[
+    anchor=west, rotate=-90,
+    text=black
+  ] at ([xshift=0mm, yshift=-6mm]current page.center) {
+    \textcolor{black}{ARTIST}
+  };
+  \node[
+    anchor=center, rotate=-90,
+    font=\bf, text=black
+  ] at ([xshift=0mm, yshift=-65mm]current page.center) {
+    \textcolor{black}{TITRE}
+  };
+  \node[
+    anchor=east, rotate=-90,
+    font=\footnotesize, text=black
+  ] at ([xshift=0mm, yshift=9mm]current page.south) {
+    REF.
+  };
+  \node[
+    anchor=north west,
+    font=\Huge, text=black
+  ] at ([xshift=6.8mm, yshift=-18mm]current page.west) {
+    {\textbf{title}}
+  };
+  \node[
+    anchor=north west,
+  ] at ([xshift=5.2mm, yshift=-35mm]current page.west) {
+    \tracklist{
+      \newTrack{First Track}{5:28}
+      \newTrack{Second Track}{4:13}
+      \newTrack{Third Track}{3:28}
+    }
+  };
+  \node[
+    anchor=north west,
+  ] at ([xshift=6.8mm, yshift=-55mm]current page.west) {
+    \footnotesize{Total Time 46:46}
+  };
+  \node[
+    anchor=north east,
+  ] at ([xshift=-12mm, yshift=-65mm]current page.center) {
+    \lineup{
+      \newArtist{First Artist}{first instrument}
+      \newArtist{Second Artist}{second instrument}
+      \newArtist{Third Artist}{third instrument}
+    }
+  };
+  \node[
+    anchor=west,
+  ] at ([xshift=9mm, yshift=17mm]current page.south west) {
+    \includegraphics[width=15mm]{./images/label.jpg}
+  };
+  \node[
+    anchor=west,
+    font=\footnotesize, text=black, align=left
+  ] at ([xshift=26mm, yshift=16.5mm]current page.south west) {
+    Produced by Label Name // www.labelwebsite.com\\
+    © \& ℗ \the\year{} Label Name // 
+    Made in XXX
+  };
+  \node[
+    anchor=south east,
+  ] at ([xshift=-12mm, yshift=9mm]current page.south) {
+    \normalsize\barcode[1cm]{0123456789012}
+  };
+  \node[
+    rotate=180,
+    anchor=south,
+    font=\footnotesize, text=black, align=center
+  ] at ([xshift=70.9mm, yshift=-30mm]current page.north west) {
+    Recorded on XX/XX at Studio Name\\
+    Mixed by Sound Inge Name // Mastered by Other Name\\
+    All tracks composed by Composer Name
+  };
+\end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[anchor=south west] at ([xshift=1.7mm, yshift=-1.2mm]current page.south) {\includegraphics[height=128mm]{./images/front_pic.jpg}};
+\end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \node[rotate=180, anchor=south west] at ([xshift=1.2mm, yshift=1.2mm]current page.north east) {\includegraphics[height=128mm]{./images/inside_pic.jpg}};
+\end{tikzpicture}
+
+\showframes
+
+\end{document}

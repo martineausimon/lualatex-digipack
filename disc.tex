@@ -1,0 +1,46 @@
+\documentclass{article}
+\input{./lib/disc.tex}
+
+\begin{document}
+
+\begin{tikzpicture}[opacity=1, remember picture, overlay]
+  \clip (current page.center) circle (\CDcirc);
+  \node at (current page.center) {
+    \includegraphics[
+      height=\paperheight,
+      angle=0,
+    ]{./images/disc_pic.jpg}
+  };
+\end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \path[postaction={
+    decoration={
+      text along path, 
+      text={|\tiny\color{black}|ALL RIGHTS OF THE PRODUCER AND OF THE OWNER OF THE RECORDED WORK RESERVED. UNAUTHORIZED COPYING, HIRING, LENDING, PUBLIC PERFORMANCE, AND BROADCASTING OF THIS RECORD ARE PROHIBITED - © AND ℗ LABEL \the\year{}},
+      text align=fit to path
+    },decorate}
+  ]($(current page.center) + ({220}:{\CDcirc-6})$) arc ({220}:{-40}:{\CDcirc-6});
+  \draw[white, fill=white] (current page.center) circle (11mm);
+  \node at ([xshift=0mm, yshift=-40.5mm]current page.center) {
+    \includegraphics[width=1cm]{./images/label.jpg}
+  };
+  \node[
+    anchor=center,
+    font=\footnotesize,
+    text=white
+  ] at ([xshift=0mm, yshift=-47.5mm]current page.center) {
+    REF.
+  };
+  \node[
+    anchor=center,
+    text=black
+  ] at ([xshift=0mm, yshift=-53mm]current page.center) {
+    \cdLogo{0.6}
+  };
+\end{tikzpicture}
+
+\showframes
+
+\end{document}
+

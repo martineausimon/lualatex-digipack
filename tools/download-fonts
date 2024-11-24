@@ -1,0 +1,52 @@
+#!/usr/bin/env lua
+
+package.path = table.concat({
+  package.path,
+  "./lua/?.lua",
+}, ";")
+
+local tools = require('utils.tools')
+local messages = require('utils.messages')
+
+if arg[1] == "--help" or arg[1] == "-h" or #arg ~= 0 then
+  messages.send([[
+Usage: ./tools/download-fonts
+
+Description:
+  This script downloads fonts from the specified links and saves them in the ./fonts directory.
+
+How it works:
+  - Checks if the font file already exists in the ./fonts directory.
+  - Prompts the user for confirmation before downloading.
+  - Supports both direct font file downloads and extracting from a zip file.
+
+Dependencies:
+  - wget: Used to download the fonts.
+  - unzip: Required if the font is contained in a zip file.
+
+Warning:
+  Please ensure you have the necessary licenses to download and use the fonts.
+]])
+  return
+end
+
+messages.send("Ensure you have the necessary licenses to download and use these fonts.")
+
+local fonts = {
+  disc = {
+    name = "Disc font",
+    location = "https://font.download/dl/font/disc.zip",
+    destination = "./fonts/Disc-white.ttf",
+    zip_location = "disc.TTF"
+  },
+  eurostile = {
+    name = "Eurostile font",
+    location = "https://blogfonts.com/download/eurostile-black.htm",
+    destination = "./fonts/Eurostile-bold.ttf",
+    zip_location = "erosyt.ttf"
+  }
+}
+
+for _, j in pairs(fonts) do
+  tools.download(j.name, j.location, j.destination, j.zip_location)
+end

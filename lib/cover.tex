@@ -1,0 +1,114 @@
+\input{./lib/global.tex}
+
+\usepackage[
+  paperheight=256mm, paperwidth=292mm,
+  marginparsep=0mm, marginparwidth=0mm,
+  top=0mm, bottom=0mm, left=0mm, right=0mm
+]{geometry}
+
+\usepackage{mwe}
+
+%\directlua{require("barcode")}
+
+\newcommand\barcode[2][1cm]{
+  \directlua{
+    local barcode = dofile('./lua/barcode.lua')
+    barcode.generate_barcode_lua("#2", tex.sp("#1"))
+  }
+}
+
+\newcommand\round[3]{
+  \begin{scope}[shift={(#1+67.1mm, #2-49mm)}, rotate=#3]
+    \fill[white, rounded corners=11mm](-12.25mm,-11mm) rectangle (12.25mm,11mm);
+    \draw[green!70, rounded corners=11mm](-12.25mm,-11mm) rectangle (12.25mm,11mm);
+  \end{scope}
+}
+
+\newcommand\foldingLine{
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[coordinate] (cd) at ([xshift=72.4mm, yshift=-65.5mm]current page.north west) {};
+
+    \draw[green!70] (cd) circle (60mm);
+
+    \draw[green!70] ([xshift=3mm]current page.east) -- ([xshift=-3mm]current page.west);
+    \draw[green!70] ([xshift=3mm]current page.center) -- ([xshift=3mm]current page.south);
+    \draw[green!70] ([xshift=-3mm]current page.center) -- ([xshift=-3mm]current page.south);
+
+    \round{48mm}{48mm}{45}
+    \round{-48mm}{48mm}{-45}
+    \round{48mm}{-48mm}{135}
+    \round{-48mm}{-48mm}{-135}
+    \draw[green!70] (cd) circle (7.5mm);
+    \draw[green!70] (cd) circle (1mm);
+    \draw[green!70] ([xshift=-7.5mm]cd) -- ([xshift=7.5mm]cd);
+    \draw[green!70] ([yshift=7.5mm]cd) -- ([yshift=-7.5mm]cd);
+  \end{tikzpicture}
+}
+
+\newcommand\drawMargin[2][black]{%
+  \begin{tikzpicture}[remember picture, overlay, opacity=0.15]
+    \def\L{#2}
+    \tikzset{O/.style={#1, line width=\L}}
+    \draw[O] ([xshift=\L/2, yshift=-\L]current page.north west) -- ([xshift=\L/2, yshift=\L]current page.south west);
+    \draw[O] ([xshift=-\L/2, yshift=-\L]current page.north east) -- ([xshift=-\L/2, yshift=\L]current page.south east);
+    \draw[O] ([xshift=0mm, yshift=\L/2]current page.south east) -- ([xshift=0mm, yshift=\L/2]current page.south west);
+    \draw[O] ([xshift=0mm, yshift=-\L/2]current page.north east) -- ([xshift=-144.8mm+\L, yshift=-\L/2]current page.north east);
+    \draw[O] ([xshift=0mm, yshift=-\L/2]current page.north west) -- ([xshift=144.8mm-\L, yshift=-\L/2]current page.north west);
+    \draw[O] ([xshift=144.8mm-\L/2, yshift=0mm]current page.north west) -- ([xshift=144.8mm-\L/2, yshift=-125mm]current page.north west);
+    \draw[O] ([xshift=-144.8mm+\L/2, yshift=0mm]current page.north east) -- ([xshift=-144.8mm+\L/2, yshift=-125mm]current page.north east);
+
+    \draw[#1, line width=\L] ([xshift=144.8mm-\L, yshift=3mm-\L/2]current page.west) -- ([xshift=-144.8mm+\L, yshift=3mm-\L/2]current page.east);
+  \end{tikzpicture}
+}
+
+\newcommand\bleed{\drawMargin[red]{3mm}}
+
+\newcommand\toleranceField{\drawMargin[black!80]{6mm}}
+
+\newcommand\cuttingLine{
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw[red] ([xshift=3mm, yshift=-3mm]current page.north west) -- ([xshift=3mm, yshift=3mm]current page.south west);
+    \draw[red] ([xshift=-3mm, yshift=-3mm]current page.north east) -- ([xshift=-3mm, yshift=3mm]current page.south east);
+    \draw[red] ([xshift=-3mm, yshift=3mm]current page.south east) -- ([xshift=3mm, yshift=3mm]current page.south west);
+    \draw[red] ([xshift=3mm, yshift=-3mm]current page.north west) -- ([xshift=141.8mm, yshift=-3mm]current page.north west);
+    \draw[red] ([xshift=-3mm, yshift=-3mm]current page.north east) -- ([xshift=-141.8mm, yshift=-3mm]current page.north east);
+    \draw[red] ([xshift=141.8mm, yshift=-3mm]current page.north west) -- ([xshift=141.8mm, yshift=-128mm]current page.north west);
+    \draw[red] ([xshift=-141.8mm, yshift=-3mm]current page.north east) -- ([xshift=-141.8mm, yshift=-128mm]current page.north east);
+    \draw[red] ([xshift=141.8mm, yshift=0mm]current page.west) -- ([xshift=-141.8mm, yshift=0mm]current page.east);
+  \end{tikzpicture}
+}
+
+\newcommand\tracklist[1]{
+  \renewcommand{\arraystretch}{1.2} 
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{} p{2mm} l}
+    #1
+  \end{tabular}
+}
+
+\newcounter{trackcount}
+\setcounter{trackcount}{0}
+
+\newcommand\newTrack[2]{
+  \stepcounter{trackcount}
+  \arabic{trackcount}. &{\textbf{#1}} {\footnotesize{#2}}\\
+}
+
+\newcommand\lineup[1]{
+  \renewcommand{\arraystretch}{1.2}
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{} r l @{}}
+    #1
+  \end{tabular}
+}
+
+\newcommand\newArtist[2]{
+  \textbf{#1}&{#2}\\
+}
+
+\newcommand\showframes{
+\foldingLine
+\bleed
+\toleranceField
+\cuttingLine
+}

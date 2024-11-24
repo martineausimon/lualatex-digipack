@@ -1,0 +1,19 @@
+\usepackage{graphicx}
+\usepackage[cmyk]{xcolor}
+\usepackage{tikz}
+
+\usepackage{fontspec}
+\usepackage{filehook}
+
+\IfFileExists{./fonts/Disc-white.ttf}{
+  \newfontfamily\discfont{Disc-white.ttf}[ Path = ./fonts/, ] }{
+  \newfontfamily\discfont{TeX Gyre Adventor}[ UprightFont = *-bold, ]
+}
+
+\IfFileExists{./fonts/Eurostile-bold.ttf}{
+  \newfontfamily\eurostile{Eurostile-bold.ttf}[ Path = ./fonts/, ] }{
+  \newfontfamily\eurostile{TeX Gyre Adventor}[ UprightFont = *-bold, ]
+}
+
+\setmainfont{TeX Gyre Heros}
+\setmonofont{TeX Gyre Cursor}

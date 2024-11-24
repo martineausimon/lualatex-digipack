@@ -1,0 +1,36 @@
+\input{./lib/global.tex}
+
+\usepackage[top=0mm, bottom=0mm, left=0mm, right=0mm]{geometry}
+\geometry{paperheight=120mm, paperwidth=120mm}
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{decorations}
+\usetikzlibrary{calc}
+\usepackage{microtype}
+\microtypesetup{protrusion=false}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+
+\def\CDcirc{58.5mm}
+
+\newcommand\cdLogo[1]{\scalebox{#1}{
+  \begin{minipage}{1.5cm}
+    \resizebox{\textwidth}{!}{\hspace{4.2ex}\eurostile{COMPACT}\hspace{0.4ex}}
+
+    \vspace{-0.96ex}
+
+    \resizebox{\textwidth}{!}{\discfont{disc}}
+
+    \vspace{-1.35ex}
+
+    \resizebox{\textwidth}{!}{\eurostile{\hspace{0.3ex}DIGITAL AUDIO\hspace{0.3ex}}}
+  \end{minipage}
+}}
+
+\newcommand\showframes{
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw[red] (current page.center) circle (60mm);
+    \draw[red] (current page.center) circle (7.5mm);
+  \end{tikzpicture}
+}

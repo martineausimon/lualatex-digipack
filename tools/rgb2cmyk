@@ -1,0 +1,98 @@
+#!/usr/bin/env lua
+
+package.path = table.concat({
+  package.path,
+  "./lua/?.lua",
+}, ";")
+
+local tools = require('utils.tools')
+local messages = require('utils.messages')
+local sh = require('utils.sh')
+
+if arg[1] == "--help" or arg[1] == "-h" or #arg ~= 1 then
+  messages.send([[
+Usage: ./tools/rgb2cmyk [input]
+
+Description:
+  This script converts RGB images or PDFs to CMYK using the ISOcoated_v2_300_eci ICC profile.
+  It supports PNG, JPG, and PDF file formats and ensures high-quality CMYK output suitable for professional printing.
+
+How it works:
+  1. Checks for the required ISOcoated_v2_300_eci ICC profile in the "./lib/" directory.
+     - If the profile is missing, the script prompts to download it from the ECI website.
+  2. Verifies the existence and format of the input file.
+  3. Uses ImageMagick to perform the conversion with the following settings:
+     - Colorspace: CMYK
+     - Density: 300 DPI
+     - Quality: 100%
+     - Compression: None
+  4. Saves the output file with the same base name as the input but with ".cmyk" added to the filename.
+
+Dependencies:
+  - ImageMagick (`magick` command)
+  - wget (only required if the ICC profile needs to be downloaded)
+  - unzip (only required if the ICC profile needs to be downloaded)
+
+Examples:
+  ./lua/rgb2cmyk input.png
+  ./lua/rgb2cmyk document.pdf
+
+Note:
+  Make sure the input file exists and is one of the supported formats (PNG, JPG, or PDF).
+  The output file will be saved in the same directory as the input file.
+]])
+  return
+end
+
+if not sh.file_exists("./lib/ISOcoated_v2_300_FOGRA_39L.icc") then
+  tools.download(
+    "ISOcoated_v2_300_FOGRA_39L.icc",
+    "https://x-disc.pl/wp-content/uploads/2022/08/ISOcoated_v2_300_FOGRA_39L.zip",
+    "./lib/ISOcoated_v2_300_FOGRA_39L.icc",
+    "ISOcoated_v2_300_FOGRA_39L.icc")
+end
+
+local input = arg[1]
+
+if not sh.file_exists(input) then
+  messages.error("Can't find " .. input)
+  os.exit(1)
+end
+
+local function input_type(file)
+  return file:match("%.([a-zA-Z0-9]+)$")
+end
+
+local file_type = input_type(input)
+local basename = tools.remove_ext(input)
+local output = basename .. ".cmyk" .. (file_type == "pdf" and ".pdf" or ".jpg")
+local profile = "./lib/ISOcoated_v2_300_FOGRA_39L.icc"
+
+if not (file_type == "pdf" or file_type == "jpg" or file_type == "png") then
+  messages.error("Input file must be png, jpg, or pdf")
+  os.exit(1)
+end
+
+local magick_options = {
+  profile = string.format("-profile %q", profile),
+  colorspace = "-colorspace CMYK",
+  density = "-density 300",
+  quality = "-quality 100",
+  compress = "-compress None"
+}
+
+local magick_command = string.format(
+  [[magick %q %s %s %s %s %s %q]],
+  input,
+  magick_options.profile,
+  magick_options.colorspace,
+  magick_options.density,
+  magick_options.quality,
+  magick_options.compress,
+  output
+)
+
+sh.check_dependencies("magick")
+sh.cmd(magick_command)
+
+messages.check(output)
